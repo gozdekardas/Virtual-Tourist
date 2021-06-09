@@ -27,8 +27,28 @@ class PhotosViewController: UIViewController {
         setupCollectionView()
         setupFetchedResultsController()
         setupMapView()
-        FlickrClient.flickrGETSearchPhotos(lat: pin.latitude, lon: pin.longitude, completionHandler: getFlickrImagesURL(photos:error:))
+        setupAlbum()
+        //FlickrClient.flickrGETSearchPhotos(lat: pin.latitude, lon: pin.longitude, completionHandler: getFlickrImagesURL(photos:error:))
     }
+    
+    fileprivate func setupAlbum() {
+            if !checkPinHasAlbum() {
+                FlickrClient.flickrGETSearchPhotos(lat: pin.latitude, lon: pin.longitude, completionHandler: getFlickrImagesURL(photos:error:))
+            }else{
+                if let objects = fetchedResultsController.fetchedObjects{
+                    flckrPhotos = objects
+                }
+            }
+        }
+    
+    func checkPinHasAlbum() -> Bool {
+            if let photosFetched = fetchedResultsController.fetchedObjects{
+                if !photosFetched.isEmpty{
+                    return true
+                }
+            }
+            return false
+        }
     
     fileprivate func setupFetchedResultsController() {
             let fetchRequest: NSFetchRequest<PhotoFlickr> = PhotoFlickr.fetchRequest()
@@ -90,8 +110,8 @@ class PhotosViewController: UIViewController {
         }
     
     fileprivate func setupCollectionView() {
-              collectionView.delegate = self
-              collectionView.dataSource = self
+           //   collectionView.delegate = self
+           //   collectionView.dataSource = self
               setCollectionFlowLayout()
           }
     
@@ -248,7 +268,6 @@ extension PhotosViewController: UICollectionViewDelegate, UICollectionViewDataSo
             if flckrPhotos[indexPath.row].image != nil {
                 cell.imageView.image = UIImage(data: flckrPhotos[indexPath.row].image!)
             } else {
-                cell.imageView.image = UIImage(named: "photo_placeholder")
                 DispatchQueue.global().async {
                     FlickrClient.downloadImage(imageURL: URL(string: self.photosURL[indexPath.row].imageURL!)!) { (data, error) in
                             if let data = data {
