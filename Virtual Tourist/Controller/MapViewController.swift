@@ -143,7 +143,7 @@ extension MapViewController: MKMapViewDelegate{
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        mapView.deselectAnnotation(view.annotation, animated: true)
+        
         
         let photosViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PhotosViewController") as! PhotosViewController
         
@@ -158,6 +158,8 @@ extension MapViewController: MKMapViewDelegate{
             }
             self.navigationController?.pushViewController(photosViewController, animated: true)
         }
+        
+        mapView.deselectAnnotation(view.annotation, animated: true)
     }
     
     

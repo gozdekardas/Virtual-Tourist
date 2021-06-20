@@ -1008,7 +1008,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "241"
             endingLineNumber = "241"
-            landmarkName = "controller(_:didChange:atSectionIndex:for:)"
+            landmarkName = "controllerDidChangeContent(_:)"
             landmarkType = "7">
             <Locations>
                <Location
